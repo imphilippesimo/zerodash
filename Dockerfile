@@ -5,7 +5,7 @@ FROM openjdk:8-jre-alpine
 # Define environment variable
 ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS\
     SLEEP=10\
-    JAVA_OPTS=-Xmx1024m -Xms256m\
+    JAVA_OPTS="-Xmx1024m -Xms256m"\
     DB_HOST=35.174.133.79\
     DB_PORT=3307\
     DB_NAME=zerodash\
