@@ -17,7 +17,7 @@ ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS\
 RUN adduser -D -s /bin/sh zerodash
 
 
-# Set the current working directory to /home/snapanonyme
+# Set the current working directory to /home/zerodash
 WORKDIR /home/zerodash
 
 #copy the app to be deployed in the container
