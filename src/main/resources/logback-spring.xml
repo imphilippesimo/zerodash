@@ -4,7 +4,7 @@
 <configuration scan="true">
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
-    <property name="LOGS" value="logs"/>
+    <property name="LOGS" value="${user.home}/zerodash/zerodash-back/logs"/>
 
     <appender name="CONSOLE"
               class="ch.qos.logback.core.ConsoleAppender">
@@ -18,7 +18,7 @@
 
     <appender name="ROLLINGFILE"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${user.home}/zerodash-back/logs/zerodash.log</file>
+        <file>{LOGS}/zerodash.log</file>
         <encoder
                 class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
