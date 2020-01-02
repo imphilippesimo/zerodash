@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: zerodash
+  datasource:
+    url: jdbc:mysql://192.168.99.100:3307/zerodash?createDatabaseIfNotExist=true
+    username: zerodash
+    password: zerodash
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+
+  ## Hibernate Logging
+  logging:
+    level:
+      org.hibernate.SQL: DEBUG
+
+server:
+  port: 9010

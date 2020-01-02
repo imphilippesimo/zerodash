@@ -2,9 +2,11 @@
 <!DOCTYPE configuration>
 
 <configuration scan="true">
+    <!-- use Spring default values -->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
-    <property name="LOGS" value="logs"/>
+    <property name="LOGS" value="${user.home}/zerodash/zerodash-back/logs"/>
 
     <appender name="CONSOLE"
               class="ch.qos.logback.core.ConsoleAppender">
@@ -21,7 +23,7 @@
         <file>${LOGS}/zerodash.log</file>
         <encoder
                 class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+            <Pattern>${FILE_LOG_PATTERN}</Pattern>
         </encoder>
 
         <rollingPolicy
