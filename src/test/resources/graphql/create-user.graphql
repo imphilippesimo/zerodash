@@ -1,0 +1,5 @@
+mutation {
+    createUser(email: "name@zerodash.com",phoneNumber: "123456789",password: "mypassword"){
+        id
+    }
+}

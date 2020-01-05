@@ -1,0 +1,14 @@
+type User{
+    id: ID!
+    email: String!
+    phoneNumber: String
+    password: String!
+}
+
+type Query {
+    allUsers(page: Int!, pageSize: Int!):[User!]!
+}
+
+type Mutation {
+    createUser(email:String!,phoneNumber:String,password:String!): User!
+}
