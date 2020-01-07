@@ -2,7 +2,8 @@ type User{
     id: ID!
     email: String!
     phoneNumber: String
-    password: String!
+    role: String
+    #no paswword to avoid malicious retrieval
 }
 
 type Query {

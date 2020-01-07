@@ -3,5 +3,6 @@ query {
         id
         email
         phoneNumber
+        role
     }
 }

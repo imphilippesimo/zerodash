@@ -3,7 +3,7 @@ package com.zerofiltre.zerodash.service;
 import com.zerofiltre.zerodash.Utils.Constants;
 import com.zerofiltre.zerodash.ZerodashApplication;
 import com.zerofiltre.zerodash.model.ZDUser;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,13 +19,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ZerodashApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
+@Rollback
 public class UserServiceTest {
 
     @Autowired
     private UserService userService;
 
     @Test
-    @Rollback
     public void shouldCreateAUser() throws Exception {
         ZDUser user = new ZDUser();
         user.setEmail(Constants.TEST_EMAIL);
@@ -45,7 +45,6 @@ public class UserServiceTest {
     }
 
     @Test
-    @Rollback
     public void shouldReturnAnExceptionOnExistingEmail() throws Exception {
         ZDUser user = new ZDUser();
         user.setEmail(Constants.TEST_EMAIL);
@@ -66,7 +65,6 @@ public class UserServiceTest {
     }
 
     @Test
-    @Rollback
     public void shouldReturnAnExceptionOnExistingPhoneNumber() throws Exception {
         ZDUser user = new ZDUser();
         user.setEmail(Constants.TEST_EMAIL);

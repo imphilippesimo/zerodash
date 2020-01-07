@@ -3,7 +3,7 @@ package com.zerofiltre.zerodash.dao;
 import com.zerofiltre.zerodash.Utils.Constants;
 import com.zerofiltre.zerodash.ZerodashApplication;
 import com.zerofiltre.zerodash.model.ZDUser;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +16,8 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = ZerodashApplication.class,webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = ZerodashApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Transactional
 public class UserDAOTest {
 
     @Autowired
@@ -24,7 +25,6 @@ public class UserDAOTest {
 
     @Test
     @Rollback
-    @Transactional
     public void testAddUser() {
 
         ZDUser user = new ZDUser();
