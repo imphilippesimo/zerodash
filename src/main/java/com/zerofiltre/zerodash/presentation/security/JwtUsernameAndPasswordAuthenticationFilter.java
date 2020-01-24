@@ -2,12 +2,12 @@ package com.zerofiltre.zerodash.presentation.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerofiltre.zerodash.model.ZDUser;
+import com.zerofiltre.zerodash.utils.exceptions.AuthenticationRequestNotValidException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -38,8 +38,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-            throws AuthenticationException {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
 
         try {
 
@@ -55,7 +54,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
             return authManager.authenticate(authToken);
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new AuthenticationRequestNotValidException(e.getMessage());
         }
     }
 
@@ -79,8 +78,6 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 
         // Add token to header
         response.addHeader(jwtConfig.getHeader(), jwtConfig.getPrefix() + token);
-        //if you want to achieve some task in the controller
-        //filterChain.doFilter(request, response);
 
 
     }

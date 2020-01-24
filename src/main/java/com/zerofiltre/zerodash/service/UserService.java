@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-import static com.zerofiltre.zerodash.Utils.Constants.ACCOUNT_ALREADY_EXISTING;
+import static com.zerofiltre.zerodash.utils.Constants.ACCOUNT_ALREADY_EXISTING;
 
 @Service
 @Transactional
@@ -49,7 +49,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String emailOrPhoneNumber) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String emailOrPhoneNumber) {
 
         Optional<ZDUser> existingUser = Optional.ofNullable(userRepository.findOneByEmail(emailOrPhoneNumber).orElse(
                 userRepository.findOneByPhoneNumber(emailOrPhoneNumber).orElse(null)

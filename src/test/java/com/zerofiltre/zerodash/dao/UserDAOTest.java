@@ -1,6 +1,6 @@
 package com.zerofiltre.zerodash.dao;
 
-import com.zerofiltre.zerodash.Utils.Constants;
+import com.zerofiltre.zerodash.utils.Constants;
 import com.zerofiltre.zerodash.ZerodashApplication;
 import com.zerofiltre.zerodash.model.ZDUser;
 import org.junit.jupiter.api.Test;

@@ -2,7 +2,7 @@ package com.zerofiltre.zerodash.presentation.mutation;
 
 import com.graphql.spring.boot.test.GraphQLResponse;
 import com.graphql.spring.boot.test.GraphQLTestTemplate;
-import com.zerofiltre.zerodash.Utils.Constants;
+import com.zerofiltre.zerodash.utils.Constants;
 import com.zerofiltre.zerodash.ZerodashApplication;
 import com.zerofiltre.zerodash.model.ZDUser;
 import com.zerofiltre.zerodash.service.UserService;
