@@ -1,4 +1,4 @@
-package com.zerofiltre.zerodash.utils.exceptions;
+package com.zerofiltre.zerodash.utils.error;
 
 public class AuthenticationRequestNotValidException extends RuntimeException {
 

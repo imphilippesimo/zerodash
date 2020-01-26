@@ -2,7 +2,7 @@ package com.zerofiltre.zerodash.presentation.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerofiltre.zerodash.model.ZDUser;
-import com.zerofiltre.zerodash.utils.exceptions.AuthenticationRequestNotValidException;
+import com.zerofiltre.zerodash.utils.error.AuthenticationRequestNotValidException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.authentication.AuthenticationManager;

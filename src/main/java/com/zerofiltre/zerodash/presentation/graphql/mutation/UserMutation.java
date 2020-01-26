@@ -12,7 +12,7 @@ public class UserMutation implements GraphQLMutationResolver {
     @Autowired
     private UserService userService;
 
-    public ZDUser createUser(final String email, final String phoneNumber, final String password) throws Exception {
+    public ZDUser createUser(final String email, final String phoneNumber, final String password) {
         final ZDUser user = new ZDUser();
         user.setEmail(email);
         user.setPhoneNumber(phoneNumber);
