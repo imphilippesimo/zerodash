@@ -21,7 +21,7 @@ public class ZerodashApplication {
         logApplicationStartup(environment);
         String applicationName = environment.getProperty("spring.application.name");
         String applicationPort = environment.getProperty("server.port");
-        log.info("applicationName={} is running on port applicationPort={}", applicationName, applicationPort);
+        log.info("{} is running on port {}", applicationName, applicationPort);
 
     }
 
