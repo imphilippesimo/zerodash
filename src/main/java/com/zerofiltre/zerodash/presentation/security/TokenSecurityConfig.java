@@ -56,6 +56,13 @@ public class TokenSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 //authorize requests from the graphiQL app for graphical query testing
                 .antMatchers("/graphiql").permitAll()
+                //authorise swagger-ui requests
+                .antMatchers("/v2/api-docs",
+                        "/configuration/ui",
+                        "/swagger-resources/**",
+                        "/configuration/security",
+                        "/swagger-ui.html",
+                        "/webjars/**").permitAll()
 
                 //any other request must be authenticated
                 .anyRequest().authenticated();
