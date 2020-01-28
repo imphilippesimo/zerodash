@@ -35,7 +35,7 @@ RUN chmod 755 entrypoint.sh
 # && chown zerodash:zerodash entrypoint.sh
 
 #set the user to use when running the image to zerodash
-# USER zerodash
+USER root
 
 # Make port 9010 available to the world outside this container
 EXPOSE 9010
