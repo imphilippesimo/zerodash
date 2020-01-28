@@ -60,6 +60,6 @@ def pushToImage(containerName, tag, dockerUser, dockerPassword){
 
 def runApp(containerName, tag, dockerHubUser, httpPortEx,httpPortIn){
     sh "docker pull $dockerHubUser/$containerName"
-    sh "docker run --rm -d -p $httpPortEx:$httpPortIn --name $containerName $dockerHubUser/$containerName:$tag"
+    sh "docker run --rm -d -p $httpPortEx:$httpPortIn --name $containerName $dockerHubUser/$containerName:$tag -v /home/ec2-user/zerodash/zerodash-back:/home/zerodash/zerodash/zerodash-back"
     echo "Application started on port: ${httpPortEx} (http)"
 }
