@@ -17,6 +17,9 @@ spring:
   logging:
     level:
       org.hibernate.SQL: DEBUG
+  devtools:
+    restart:
+      additional-paths: resources/**
 
 server:
   port: 9010

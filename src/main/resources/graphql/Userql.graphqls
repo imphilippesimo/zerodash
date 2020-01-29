@@ -1,0 +1,15 @@
+type User{
+    id: ID!
+    email: String!
+    phoneNumber: String
+    role: String
+    #no paswword to avoid malicious retrieval
+}
+
+type Query {
+    allUsers(page: Int!, pageSize: Int!):[User!]!
+}
+
+type Mutation {
+    createUser(email:String!,phoneNumber:String,password:String!): User!
+}

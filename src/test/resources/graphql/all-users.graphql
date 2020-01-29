@@ -1,0 +1,8 @@
+query {
+    allUsers(page: 0, pageSize: 5){
+        id
+        email
+        phoneNumber
+        role
+    }
+}

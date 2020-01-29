@@ -13,12 +13,12 @@ ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS\
     DB_PASSWORD=zerodash\
     SPRING_ACTIVE_PROFILES=prod
 
-# Add a zerodash snaper to run our application so that it doesn't need to run as root
-RUN adduser -D -s /bin/sh zerodash
+# Add a zerodash to run our application so that it doesn't need to run as root
+#RUN adduser -D -s /bin/sh zerodash
 
 
 # Set the current working directory to /home/zerodash
-WORKDIR /home/zerodash
+#WORKDIR /home/zerodash
 
 #copy the app to be deployed in the container
 ADD target/zerodash.jar zerodash.jar
@@ -30,10 +30,11 @@ ADD entrypoint.sh entrypoint-dos.sh
 RUN sed -e 's/\r$//' entrypoint-dos.sh > entrypoint.sh
 
 #set the file as an executable and set zerodash as the owner
-RUN chmod 755 entrypoint.sh && chown zerodash:zerodash entrypoint.sh
+RUN chmod 755 entrypoint.sh
+#&& chown zerodash:zerodash entrypoint.sh
 
 #set the user to use when running the image to zerodash
-USER zerodash
+#USER zerodash
 
 # Make port 9010 available to the world outside this container
 EXPOSE 9010
