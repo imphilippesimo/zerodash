@@ -1,24 +1,24 @@
-package com.zerofiltre.zerodash.presentation.mutation;
+package com.zerofiltre.zerodash.presentation.graphql.resolver.mutation;
 
-import com.graphql.spring.boot.test.GraphQLResponse;
-import com.graphql.spring.boot.test.GraphQLTestTemplate;
-import com.zerofiltre.zerodash.utils.Constants;
-import com.zerofiltre.zerodash.ZerodashApplication;
-import com.zerofiltre.zerodash.model.ZDUser;
-import com.zerofiltre.zerodash.service.UserService;
-import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import com.graphql.spring.boot.test.*;
+import com.zerofiltre.zerodash.*;
+import com.zerofiltre.zerodash.model.*;
+import com.zerofiltre.zerodash.service.*;
+import com.zerofiltre.zerodash.utils.*;
+import org.junit.jupiter.api.*;
+import org.junit.runner.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.boot.test.context.*;
+import org.springframework.test.annotation.*;
+import org.springframework.test.context.junit4.*;
 
-import java.io.IOException;
+import java.io.*;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ZerodashApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class UserMutationTest {
 
     @Autowired
@@ -38,7 +38,7 @@ public class UserMutationTest {
         assertThat(response.isOk()).isTrue();
         assertThat(response.get("$.data.createUser.id")).isNotNull();
         assertThat(response.get("$.data.createUser.role")).isEqualTo(Constants.ROLE_USER);
-        userService.delete(Integer.valueOf(response.get("$.data.createUser.id")));
+        //userService.delete(Integer.valueOf(response.get("$.data.createUser.id")));
 
 
     }

@@ -1,30 +1,28 @@
 package com.zerofiltre.zerodash.dao;
 
-import com.zerofiltre.zerodash.utils.Constants;
-import com.zerofiltre.zerodash.ZerodashApplication;
-import com.zerofiltre.zerodash.model.ZDUser;
-import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
+import com.zerofiltre.zerodash.*;
+import com.zerofiltre.zerodash.model.*;
+import com.zerofiltre.zerodash.utils.*;
+import org.junit.jupiter.api.*;
+import org.junit.runner.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.boot.test.context.*;
+import org.springframework.test.annotation.*;
+import org.springframework.test.context.junit4.*;
 
-import java.util.List;
+import java.util.*;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ZerodashApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Transactional
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class UserDAOTest {
 
     @Autowired
     private UserRepository userRepository;
 
     @Test
-    @Rollback
     public void testAddUser() {
 
         ZDUser user = new ZDUser();
@@ -41,5 +39,24 @@ public class UserDAOTest {
         assertThat(user.getEmail()).isEqualTo(users.get(0).getEmail());
         assertThat(user.getPhoneNumber()).isEqualTo(users.get(0).getPhoneNumber());
         assertThat(user.getPassword()).isEqualTo(users.get(0).getPassword());
+    }
+
+    @Test
+    public void testFindUserByUsernameOrEmail() {
+        ZDUser user = new ZDUser();
+        user.setEmail(Constants.TEST_EMAIL);
+        user.setPhoneNumber(Constants.TEST_PHONE_NUMBER);
+        user.setPassword(Constants.TEST_PASSWORD);
+
+        userRepository.save(user);
+
+        Optional<ZDUser> createdUSer = userRepository.findOneByPhoneNumber(Constants.TEST_PHONE_NUMBER);
+        Optional<ZDUser> createdUSer2 = userRepository.findOneByEmail(Constants.TEST_EMAIL);
+        assertThat(createdUSer.isPresent()).isTrue();
+        assertThat(createdUSer2.isPresent()).isTrue();
+        assertThat(createdUSer).isEqualTo(createdUSer2);
+        assertThat(createdUSer.get().getEmail()).isEqualTo(Constants.TEST_EMAIL);
+        assertThat(createdUSer.get().getPassword()).isEqualTo(Constants.TEST_PASSWORD);
+
     }
 }
