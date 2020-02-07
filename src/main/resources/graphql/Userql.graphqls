@@ -12,4 +12,5 @@ type Query {
 
 type Mutation {
     createUser(email:String!,phoneNumber:String,password:String!): User!
+    securedResource: String
 }

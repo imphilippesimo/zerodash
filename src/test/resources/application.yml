@@ -12,12 +12,11 @@ spring:
     show-sql: true
     generate-ddl: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
 
   ## Hibernate Logging
   logging:
     level:
       org.hibernate.SQL: DEBUG
-
 server:
   port: 9010

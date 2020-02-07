@@ -20,6 +20,5 @@ spring:
   devtools:
     restart:
       additional-paths: resources/**
-
 server:
   port: 9010

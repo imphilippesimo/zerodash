@@ -3,10 +3,10 @@ package com.zerofiltre.zerodash.service;
 import com.zerofiltre.zerodash.dao.UserRepository;
 import com.zerofiltre.zerodash.model.ZDUser;
 import com.zerofiltre.zerodash.utils.error.AccountAlreadyExistsException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,13 +17,15 @@ import static com.zerofiltre.zerodash.utils.Constants.ROLE_USER;
 
 @Service
 @Transactional
-public class UserService{
+public class UserService {
 
-    @Autowired
+
     private UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -35,6 +37,8 @@ public class UserService{
         } else if (userRepository.findOneByPhoneNumber(user.getPhoneNumber()).isPresent()) {
             throw new AccountAlreadyExistsException(ACCOUNT_ALREADY_EXISTING, user.getPhoneNumber());
         } else {
+            String encodedPassword = passwordEncoder.encode(user.getPassword());
+            user.setPassword(encodedPassword);
             user.setRole(ROLE_USER);
             return userRepository.save(user);
         }
@@ -44,7 +48,6 @@ public class UserService{
         Pageable pageRequest = PageRequest.of(page, pageSize);
         return userRepository.findAll(pageRequest);
     }
-
 
 
     public void delete(int id) {

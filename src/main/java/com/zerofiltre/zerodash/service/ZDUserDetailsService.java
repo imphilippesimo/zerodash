@@ -8,15 +8,18 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
 import static com.zerofiltre.zerodash.utils.Constants.ZDUSER_NOT_FOUND;
 
+@Component
 public class ZDUserDetailsService implements UserDetailsService {
 
     private UserRepository userRepository;
+
 
     public ZDUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -28,12 +31,14 @@ public class ZDUserDetailsService implements UserDetailsService {
         Optional<ZDUser> existingUser = Optional.ofNullable(userRepository.findOneByEmail(emailOrPhoneNumber).orElse(
                 userRepository.findOneByPhoneNumber(emailOrPhoneNumber).orElse(null)
         ));
-        existingUser.ifPresent(ZDUserDetailsService::accept);
+        if (existingUser.isPresent()) {
+            return ZDUserDetailsService.accept(existingUser.get());
+        } else {
+            // If user not found. Throw this exception.
+            StringBuilder sb = new StringBuilder(ZDUSER_NOT_FOUND).append(emailOrPhoneNumber);
+            throw new ZDUserNotFoundException(sb.toString());
 
-        // If user not found. Throw this exception.
-        StringBuilder sb = new StringBuilder(ZDUSER_NOT_FOUND).append(emailOrPhoneNumber);
-        throw new ZDUserNotFoundException(sb.toString());
-
+        }
     }
 
     private static User accept(ZDUser zdUser) {
