@@ -27,6 +27,18 @@ node {
         imageBuild(CONTAINER_NAME, CONTAINER_TAG)
     }
 
+    stage('Sonarqube') {
+        environment {
+            scannerHome = tool 'SonarQubeScanner'
+        }    steps {
+            withSonarQubeEnv('sonarqube') {
+                sh "${scannerHome}/bin/sonar-scanner"
+            }        timeout(time: 10, unit: 'MINUTES') {
+                waitForQualityGate abortPipeline: true
+            }
+        }
+    }
+
     stage('Push to Docker Registry'){
         withCredentials([usernamePassword(credentialsId: 'DockerhubCredentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
             pushToImage(CONTAINER_NAME, CONTAINER_TAG, USERNAME, PASSWORD)
