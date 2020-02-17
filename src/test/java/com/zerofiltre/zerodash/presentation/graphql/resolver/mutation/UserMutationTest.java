@@ -38,7 +38,7 @@ public class UserMutationTest {
         assertThat(response.isOk()).isTrue();
         assertThat(response.get("$.data.createUser.id")).isNotNull();
         assertThat(response.get("$.data.createUser.role")).isEqualTo(Constants.ROLE_USER);
-        //userService.delete(Integer.valueOf(response.get("$.data.createUser.id")));
+
 
 
     }

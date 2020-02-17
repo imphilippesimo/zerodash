@@ -14,8 +14,6 @@ import org.springframework.security.test.context.support.*;
 import org.springframework.test.annotation.*;
 import org.springframework.test.context.junit4.*;
 
-import java.io.*;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -32,49 +30,43 @@ public class GraphqlSecurityTests {
 
     @Test
     @DisplayName("Access Unsecured resource should be OK")
-    public void unsecured_resource_ok() throws IOException {
+    public void unsecuredResourceOk() {
         userMutation.createUser(Constants.TEST_EMAIL, Constants.TEST_PHONE_NUMBER, Constants.TEST_PASSWORD);
     }
 
 
     @Test
     @DisplayName("Unauthenticated Access to secured resource should be unauthorized ")
-    public void secured_unauthorized_access_throws_exception() {
-        Assertions.assertThrows(UnauthenticatedAccessException.class, () ->
-                userMutation.securedResource()
-        );
+    public void securedUnauthorizedAccessThrowsException() {
+        Assertions.assertThrows(UnauthenticatedAccessException.class, () -> userMutation.securedResource());
     }
 
     @Test
     @DisplayName("Authenticated Access to secured resource should be OK ")
     @WithMockUser(username = Constants.TEST_EMAIL)
-    public void secured_ok() throws IOException {
+    public void securedOk() {
         userMutation.securedResource();
     }
 
     @Test
     @DisplayName("Unauthenticated Access to admin secured resource should be unauthorized ")
     @WithMockUser(username = Constants.TEST_EMAIL)
-    public void admin_unauthorized_access_throws_exception() {
-        Assertions.assertThrows(UnauthenticatedAccessException.class, () -> {
-            userQuery.allUsers(0, 10);
-        });
+    public void adminUnauthorizedAccessThrowsException() {
+        Assertions.assertThrows(UnauthenticatedAccessException.class, () -> userQuery.allUsers(0, 10));
     }
 
 
     @Test
     @DisplayName("Unauthorized Access to admin secured resource should be forbidden ")
     @WithMockUser(username = Constants.TEST_EMAIL)
-    public void without_admin_role_throws_exception() {
-        Assertions.assertThrows(UnauthenticatedAccessException.class, () -> {
-            userQuery.allUsers(0, 10);
-        });
+    public void withoutAdminRoleThrowsException() {
+        Assertions.assertThrows(UnauthenticatedAccessException.class, () -> userQuery.allUsers(0, 10));
     }
 
     @Test
     @DisplayName("Admin Authorized Access to admin secured resource should be OK ")
     @WithMockUser(username = Constants.TEST_EMAIL, roles = "ADMIN")
-    public void admin_role_ok() {
+    public void adminRoleOk() {
         userQuery.allUsers(0, 10);
 
     }
