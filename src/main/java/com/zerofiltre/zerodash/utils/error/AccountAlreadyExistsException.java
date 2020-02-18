@@ -11,7 +11,7 @@ import static com.zerofiltre.zerodash.utils.Constants.INVALID_IDENTIFIER;
 
 public class AccountAlreadyExistsException extends RuntimeException implements GraphQLError {
 
-    final Map<String, Object> extensions = new HashMap<>();
+    private final Map<String, Object> extensions = new HashMap<>();
 
     public AccountAlreadyExistsException(String message, String identifier) {
         super(message);

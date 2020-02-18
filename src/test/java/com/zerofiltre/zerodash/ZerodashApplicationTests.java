@@ -10,6 +10,7 @@ class ZerodashApplicationTests {
 
     @Test
     void contextLoads() {
+        //Just to test if the context is loading successfully
     }
 
 }

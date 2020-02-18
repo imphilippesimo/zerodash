@@ -1,20 +1,19 @@
 package com.zerofiltre.zerodash.service;
 
-import com.zerofiltre.zerodash.utils.Constants;
-import com.zerofiltre.zerodash.ZerodashApplication;
-import com.zerofiltre.zerodash.model.ZDUser;
-import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
+import com.zerofiltre.zerodash.*;
+import com.zerofiltre.zerodash.model.*;
+import com.zerofiltre.zerodash.utils.*;
+import org.junit.jupiter.api.*;
+import org.junit.runner.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.boot.test.context.*;
+import org.springframework.data.domain.*;
 import org.springframework.test.annotation.*;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.context.junit4.*;
 
-import java.util.List;
+import java.util.*;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ZerodashApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -25,7 +24,7 @@ public class UserServiceTest {
     private UserService userService;
 
     @Test
-    public void shouldCreateAUser() throws Exception {
+    public void shouldCreateAUser(){
         ZDUser user = new ZDUser();
         user.setEmail(Constants.TEST_EMAIL);
         user.setPhoneNumber(Constants.TEST_PHONE_NUMBER);
@@ -44,7 +43,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void shouldReturnAnExceptionOnExistingEmail() throws Exception {
+    public void shouldReturnAnExceptionOnExistingEmail(){
         ZDUser user = new ZDUser();
         user.setEmail(Constants.TEST_EMAIL);
         user.setPhoneNumber(Constants.TEST_PHONE_NUMBER);
@@ -64,7 +63,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void shouldReturnAnExceptionOnExistingPhoneNumber() throws Exception {
+    public void shouldReturnAnExceptionOnExistingPhoneNumber(){
         ZDUser user = new ZDUser();
         user.setEmail(Constants.TEST_EMAIL);
         user.setPhoneNumber(Constants.TEST_PHONE_NUMBER);

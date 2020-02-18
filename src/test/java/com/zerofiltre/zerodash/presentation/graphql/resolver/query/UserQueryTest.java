@@ -33,7 +33,7 @@ public class UserQueryTest {
 
     @Test
     @WithMockUser(username = Constants.TEST_EMAIL, roles = "ADMIN")
-    public void allUsers() throws Exception {
+    public void allUsers() {
         ZDUser user = new ZDUser();
         user.setEmail(Constants.TEST_EMAIL);
         user.setPhoneNumber(Constants.TEST_PHONE_NUMBER);

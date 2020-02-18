@@ -16,8 +16,23 @@ node {
     }
 
     stage('Build'){
-        sh "mvn clean install"
+            sh "mvn clean install"
     }
+
+     stage('Sonarqube') {
+            def scannerHome = tool 'SonarQubeScanner'
+            withSonarQubeEnv('sonarqube') {
+                   sh "${scannerHome}/bin/sonar-scanner"
+            }
+
+            timeout(time: 10, unit: 'MINUTES') {
+                    def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
+                    if (qg.status != 'OK') {
+                         error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                    }
+            }
+      }
+
 
     stage("Image Prune"){
         imagePrune(CONTAINER_NAME)
@@ -27,17 +42,7 @@ node {
         imageBuild(CONTAINER_NAME, CONTAINER_TAG)
     }
 
-    stage('Sonarqube') {
-        environment {
-            scannerHome = tool 'SonarQubeScanner'
-        }    steps {
-            withSonarQubeEnv('sonarqube') {
-                sh "${scannerHome}/bin/sonar-scanner"
-            }        timeout(time: 10, unit: 'MINUTES') {
-                waitForQualityGate abortPipeline: true
-            }
-        }
-    }
+
 
     stage('Push to Docker Registry'){
         withCredentials([usernamePassword(credentialsId: 'DockerhubCredentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
