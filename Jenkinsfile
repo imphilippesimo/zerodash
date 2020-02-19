@@ -1,8 +1,6 @@
-def CONTAINER_NAME="zerodash"
-def CONTAINER_TAG="latest"
+def CONTAINER_NAME="zerodash-api"
+def CONTAINER_TAG="1.0.0"
 def DOCKER_HUB_USER="imzerofiltre"
-def HTTP_PORT_EX="8090"
-def HTTP_PORT_IN="9010"
 
 node {
 
@@ -51,7 +49,7 @@ node {
     }
 
     stage('Run App'){
-        runApp(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER, HTTP_PORT_EX, HTTP_PORT_IN)
+        runApp(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER)
     }
 
 }
@@ -64,7 +62,7 @@ def imagePrune(containerName){
 }
 
 def imageBuild(containerName, tag){
-    sh "docker build -t $containerName:$tag  -t $containerName --pull --no-cache ."
+    sh "docker build -t $containerName:$tag  --pull --no-cache ."
     echo "Image build complete"
 }
 
@@ -75,8 +73,7 @@ def pushToImage(containerName, tag, dockerUser, dockerPassword){
     echo "Image push complete"
 }
 
-def runApp(containerName, tag, dockerHubUser, httpPortEx,httpPortIn){
+def runApp(containerName, tag, dockerHubUser){
     sh "docker pull $dockerHubUser/$containerName"
-    sh "docker run --rm -d -p $httpPortEx:$httpPortIn --name $containerName -v /home/ec2-user/zerodash/zerodash-back:/root/zerodash/zerodash-back $dockerHubUser/$containerName:$tag "
-    echo "Application started on port: ${httpPortEx} (http)"
+    sh "docker run --rm -d --name $containerName -v /home/ec2-user/zerodash/zerodash-back:/root/zerodash/zerodash-back $dockerHubUser/$containerName:$tag "
 }
