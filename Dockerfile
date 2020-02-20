@@ -5,14 +5,7 @@ FROM openjdk:8-jre-alpine
 # Define environment variable
 ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS\
     SLEEP=10\
-    JAVA_OPTS="-Xmx1024m -Xms256m"\
-    DB_HOST=35.174.133.79\
-    DB_PORT=3307\
-    DB_NAME=zerodash\
-    DB_USER=zerodash\
-    DB_PASSWORD=zerodash\
-    SPRING_ACTIVE_PROFILES=prod
-
+    JAVA_OPTS="-Xmx1024m -Xms256m"
 
 # Add a zerodash to run our application so that it doesn't need to run as root
 #RUN adduser -D -s /bin/sh zerodash

@@ -1,6 +1,3 @@
-def CONTAINER_NAME="zerodash-api"
-def CONTAINER_TAG="1.0.0"
-def DOCKER_HUB_USER="imzerofiltre"
 
 node {
 
@@ -13,7 +10,7 @@ node {
         checkout scm
     }
 
-    stage('Build'){
+    /*stage('Build'){
             sh "mvn clean install"
     }
 
@@ -29,51 +26,32 @@ node {
                          error "Pipeline aborted due to quality gate failure: ${qg.status}"
                     }
             }
-      }
+      }*/
 
-
-    stage("Image Prune"){
-        imagePrune(CONTAINER_NAME)
-    }
-
-    stage('Image Build'){
-        imageBuild(CONTAINER_NAME, CONTAINER_TAG)
-    }
-
-
-
-    stage('Push to Docker Registry'){
+    stage('Build and push API to docker registry'){
         withCredentials([usernamePassword(credentialsId: 'DockerhubCredentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-            pushToImage(CONTAINER_NAME, CONTAINER_TAG, USERNAME, PASSWORD)
-        }
+                    buildAndPush(USERNAME, PASSWORD)
+                }
     }
 
-    stage('Run App'){
-        runApp(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER)
+    stage('Deploy on k8s'){
+        runApp()
     }
 
 }
 
-def imagePrune(containerName){
-    try {
-        sh "docker image prune -f"
-        sh "docker stop $containerName"
-    } catch(error){}
-}
-
-def imageBuild(containerName, tag){
-    sh "docker build -t $containerName:$tag  --pull --no-cache ."
+def buildAndPush(dockerUser, dockerPassword){
+    sh "docker build -t ${env.API_CONTAINER_TAG}  --pull --no-cache ."
     echo "Image build complete"
-}
-
-def pushToImage(containerName, tag, dockerUser, dockerPassword){
     sh "docker login -u $dockerUser -p $dockerPassword"
-    sh "docker tag $containerName:$tag $dockerUser/$containerName:$tag"
-    sh "docker push $dockerUser/$containerName:$tag"
+    sh "docker push ${env.API_CONTAINER_TAG}"
     echo "Image push complete"
 }
 
-def runApp(containerName, tag, dockerHubUser){
-    sh "docker pull $dockerHubUser/$containerName"
-    sh "docker run --rm -d --name $containerName -v /home/ec2-user/zerodash/zerodash-back:/root/zerodash/zerodash-back $dockerHubUser/$containerName:$tag "
+
+def runApp(){
+    sh """
+        kubectl set image deployment/zerodash-api zerodash-api=${env.API_CONTAINER_TAG}
+        kubectl rollout status -w deployment/zerodash-api
+    """
 }
