@@ -5,8 +5,11 @@ def label = "worker-${UUID.randomUUID().toString()}"
         }
 
         stage('Build'){
+            container('maven'){
                     sh "mvn clean install -DskipTests=true"
             }
+
+        }
 
              /*stage('Sonarqube') {
                     def scannerHome = tool 'SonarQubeScanner'
