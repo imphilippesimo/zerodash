@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zerodash-api
+spec:
+  minReadySeconds: 30
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zerodash-api
+  template:
+    metadata:
+      labels:
+        app: zerodash-api
+    spec:
+      containers:
+        - name: zerodash-api
+          image:  imzerofiltre/zerodash-api:1.0.2
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9010
+          env:
+            - name: DB_HOST
+              value: '192.168.99.102'
+            - name: DB_PORT
+              value: '32715'
+            - name: DB_NAME
+              value: 'zerodash'
+            - name: DB_USER
+              value: 'zerodash'
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql
+                  key: mysql-user-password
+            - name: SPRING_ACTIVE_PROFILES
+              value: 'prod'
+
+
