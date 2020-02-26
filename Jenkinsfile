@@ -4,11 +4,11 @@ def label = "worker-${UUID.randomUUID().toString()}"
            checkout scm
         }
 
-        /*stage('Build'){
-                    sh "mvn clean install"
+        stage('Build'){
+                    sh "mvn clean install -DskipTests=true"
             }
 
-             stage('Sonarqube') {
+             /*stage('Sonarqube') {
                     def scannerHome = tool 'SonarQubeScanner'
                     withSonarQubeEnv('sonarqube') {
                            sh "${scannerHome}/bin/sonar-scanner"
