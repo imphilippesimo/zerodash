@@ -1,4 +1,4 @@
-    node(label){
+    node(POD_LABEL){
         stage('Checkout') {
            checkout scm
         }
