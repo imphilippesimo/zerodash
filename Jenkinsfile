@@ -1,4 +1,5 @@
-    node(POD_LABEL){
+def label = "worker-${UUID.randomUUID().toString()}"
+    node(label){
         stage('Checkout') {
            checkout scm
         }
