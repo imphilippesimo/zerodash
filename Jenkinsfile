@@ -1,5 +1,5 @@
 def label = "worker-${UUID.randomUUID().toString()}"
-    node(label){
+    node('chilling-jenkins-jenkins-slave'){
         stage('Checkout') {
            checkout scm
         }
