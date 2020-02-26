@@ -28,7 +28,7 @@ def label = "worker-${UUID.randomUUID().toString()}"
               stage('Build and push API to docker registry'){
                       withCredentials([usernamePassword(credentialsId: 'DockerHubCredentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                                   buildAndPush(USERNAME, PASSWORD)
-                              }
+                      }
                }
 
                stage('Deploy on k8s'){
@@ -56,7 +56,7 @@ def runApp(){
         if (${env.API_CONTAINER_TAG} == 'imzerofiltre/zerodash-api:1.0.0') {
             dir("k8s") {
                    sh """
-                     envsubst ${env.API_CONTAINER_TAG} < api-deployment.yaml > api.tmp.yaml
+                     envsubst '${env.API_CONTAINER_TAG}' < api-deployment.yaml > api.tmp.yaml
                      kubectl create -f api-service.yaml
                      kubectl create -f api-secret.yaml
                      kubectl create -f api.tmp.yaml
