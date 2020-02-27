@@ -26,7 +26,7 @@
 
               stage('Build and push API to docker registry'){
                       withCredentials([usernamePassword(credentialsId: 'DockerHubCredentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                                  //buildAndPush(USERNAME, PASSWORD)
+                                  buildAndPush(USERNAME, PASSWORD)
                       }
                }
 
