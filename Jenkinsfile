@@ -40,8 +40,8 @@
 def buildAndPush(dockerUser, dockerPassword){
     container('docker'){
         sh """
-            export image_exists = docker pull ${env.API_CONTAINER_TAG} > /dev/null && echo "true" || echo "false"
-            if [ image_exists != true ]
+            export image_exists=`docker pull ${env.API_CONTAINER_TAG} > /dev/null && echo "true" || echo "false"`
+            if [ $image_exists != true ]
             then
                 docker build -t ${env.API_CONTAINER_TAG}  --pull --no-cache .
                 echo "Image build complete"
