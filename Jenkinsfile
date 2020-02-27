@@ -64,9 +64,9 @@ def runApp(){
             dir("k8s") {
                    sh """
                      envsubst '${env.API_CONTAINER_TAG}' < api-deployment.yaml > api.tmp.yaml
-                     kubectl create -f api-service.yaml
-                     kubectl create -f api-secret.yaml
-                     kubectl create -f api.tmp.yaml
+                     kubectl apply -f api-service.yaml
+                     kubectl apply -f api-secret.yaml
+                     kubectl apply -f api.tmp.yaml
                    """
             }
         }
