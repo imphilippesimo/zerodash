@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: zerodash-api
-          image:  ''
+          image:  'imzerofiltre/zerodash-api:1.0.0'
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9010
