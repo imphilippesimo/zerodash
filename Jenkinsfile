@@ -1,4 +1,3 @@
-def label = "worker-${UUID.randomUUID().toString()}"
     node('chilling-jenkins-jenkins-slave'){
         stage('Checkout') {
            checkout scm
@@ -53,7 +52,7 @@ def runApp(){
 
     container('kubectl'){
 
-        if (${env.API_CONTAINER_TAG} == 'imzerofiltre/zerodash-api:1.0.0') {
+        if (env.API_CONTAINER_TAG == 'imzerofiltre/zerodash-api:1.0.0') {
             dir("k8s") {
                    sh """
                      envsubst '${env.API_CONTAINER_TAG}' < api-deployment.yaml > api.tmp.yaml
