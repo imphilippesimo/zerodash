@@ -26,7 +26,7 @@
 
               stage('Build and push API to docker registry'){
                       withCredentials([usernamePassword(credentialsId: 'DockerHubCredentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                                  buildAndPush(USERNAME, PASSWORD)
+                                  //buildAndPush(USERNAME, PASSWORD)
                       }
                }
 
@@ -57,7 +57,7 @@ def runApp(){
 
     container('kubectl'){
 
-        if (env.API_CONTAINER_TAG == 'imzerofiltre/zerodash-api:1.0.0') {
+        //if (env.API_CONTAINER_TAG == 'imzerofiltre/zerodash-api:1.0.0') {
             dir("k8s") {
                    sh """
                      envsubst '${env.API_CONTAINER_TAG}' < api-deployment.yaml > api.tmp.yaml
@@ -66,7 +66,7 @@ def runApp(){
                      kubectl apply -f api.tmp.yaml
                    """
             }
-        }
+        //}
         sh """
                 kubectl set image deployment/zerodash-api zerodash-api=${env.API_CONTAINER_TAG}
                 kubectl rollout status -w deployment/zerodash-api
