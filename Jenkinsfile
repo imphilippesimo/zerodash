@@ -42,10 +42,10 @@ withEnv(["api_image_tag=imzerofiltre/zerodash-api:0.0.${env.BUILD_NUMBER}"]) {
 def buildAndPush(dockerUser, dockerPassword) {
     container('docker') {
         sh """
-                docker build -t ${env.API_CONTAINER_TAG}  --pull --no-cache .
+                docker build -t ${api_image_tag}  --pull --no-cache .
                 echo "Image build complete"
                 docker login -u $dockerUser -p $dockerPassword
-                docker push ${env.API_CONTAINER_TAG}
+                docker push ${api_image_tag}
                 echo "Image push complete"
 
          """
