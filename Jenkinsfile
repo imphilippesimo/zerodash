@@ -57,15 +57,12 @@ def buildAndPush(dockerUser, dockerPassword) {
 def runApp() {
 
     container('kubectl') {
-
-        if (env.BUILD_NUMBER == '1') {
-            dir("k8s") {
-                sh """
+        dir("k8s") {
+            sh """
                      kubectl apply -f api-service.yaml
                      kubectl apply -f api-secret.yaml
                      kubectl apply -f api-deployment.yaml
                    """
-            }
         }
         sh """
                 kubectl set image deployment/zerodash-api zerodash-api=${api_image_tag}
