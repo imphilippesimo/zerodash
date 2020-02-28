@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: zerodash-api
 spec:
-  minReadySeconds: 30
+  minReadySeconds: 60
   replicas: 3
   selector:
     matchLabels:
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: zerodash-api
-          image:  'imzerofiltre/zerodash-api:1.0.0'
+          image: imzerofiltre/zerodash-api:0.0.1
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9010
@@ -31,9 +31,13 @@ spec:
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mysql
+                  name: zerodash-api
                   key: mysql-user-password
             - name: SPRING_ACTIVE_PROFILES
-              value: 'prod'
+              value: 'dev'
+            - name: JAVA_OPTS
+              value: '-Xmx1024m -Xms256m'
+            - name: SPRING_OUTPUT_ANSI_ENABLED
+              value: 'ALWAYS'
 
 

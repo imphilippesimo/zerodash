@@ -1,44 +1,46 @@
-    node('chilling-jenkins-jenkins-slave'){
+withEnv(["api_image_tag=imzerofiltre/zerodash-api:0.0.${env.BUILD_NUMBER}"]) {
+    node('chilling-jenkins-jenkins-slave') {
         stage('Checkout') {
-           checkout scm
+            checkout scm
         }
 
-        stage('Build'){
-            container('maven'){
-                    sh "mvn clean install -DskipTests=true"
+        stage('Build') {
+            container('maven') {
+                sh "mvn clean install -DskipTests=true"
             }
 
         }
 
-             /*stage('Sonarqube') {
-                    def scannerHome = tool 'SonarQubeScanner'
-                    withSonarQubeEnv('sonarqube') {
-                           sh "${scannerHome}/bin/sonar-scanner"
-                    }
-
-                    timeout(time: 10, unit: 'MINUTES') {
-                            def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
-                            if (qg.status != 'OK') {
-                                 error "Pipeline aborted due to quality gate failure: ${qg.status}"
-                            }
-                    }
-              }*/
-
-              stage('Build and push API to docker registry'){
-                      withCredentials([usernamePassword(credentialsId: 'DockerHubCredentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                                  buildAndPush(USERNAME, PASSWORD)
-                      }
+        /*stage('Sonarqube') {
+               def scannerHome = tool 'SonarQubeScanner'
+               withSonarQubeEnv('sonarqube') {
+                      sh "${scannerHome}/bin/sonar-scanner"
                }
 
-               stage('Deploy on k8s'){
-                       runApp()
+               timeout(time: 10, unit: 'MINUTES') {
+                       def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
+                       if (qg.status != 'OK') {
+                            error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                       }
                }
+         }*/
+
+        stage('Build and push API to docker registry') {
+            withCredentials([usernamePassword(credentialsId: 'DockerHubCredentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                buildAndPush(USERNAME, PASSWORD)
+            }
+        }
+
+        stage('Deploy on k8s') {
+            runApp()
+        }
 
     }
+}
 
 
-def buildAndPush(dockerUser, dockerPassword){
-    container('docker'){
+def buildAndPush(dockerUser, dockerPassword) {
+    container('docker') {
         sh """
                 docker build -t ${env.API_CONTAINER_TAG}  --pull --no-cache .
                 echo "Image build complete"
@@ -48,28 +50,30 @@ def buildAndPush(dockerUser, dockerPassword){
 
          """
 
-
     }
 
 }
 
-def runApp(){
+def runApp() {
 
-    container('kubectl'){
+    container('kubectl') {
 
-        if (env.API_CONTAINER_TAG == 'imzerofiltre/zerodash-api:1.0.0') {
+        if (env.BUILD_NUMBER == '1') {
             dir("k8s") {
-                   sh """
-                     envsubst '${env.API_CONTAINER_TAG}' < api-deployment.yaml > api.tmp.yaml
+                sh """
                      kubectl apply -f api-service.yaml
                      kubectl apply -f api-secret.yaml
-                     kubectl apply -f api.tmp.yaml
+                     kubectl apply -f api-deployment.yaml
                    """
             }
         }
         sh """
-                kubectl set image deployment/zerodash-api zerodash-api=${env.API_CONTAINER_TAG}
-                kubectl rollout status -w deployment/zerodash-api
+                kubectl set image deployment/zerodash-api zerodash-api=${api_image_tag}
+                if ! kubectl rollout status -w deployment/zerodash-api; then
+                    kubectl rollout undo deployment/zerodash-api
+                    kubectl rollout status deployment/zerodash-api
+                    exit 1
+                fi
             """
     }
 
