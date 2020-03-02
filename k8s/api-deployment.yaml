@@ -3,7 +3,8 @@ kind: Deployment
 metadata:
   name: zerodash-api
 spec:
-  minReadySeconds: 60
+  minReadySeconds: 30
+  progressDeadlineSeconds: 90
   replicas: 3
   selector:
     matchLabels:
