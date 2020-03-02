@@ -14,6 +14,10 @@ spec:
       labels:
         app: zerodash-api
     spec:
+      volumes:
+        - name: api-logs-volume
+          persistentVolumeClaim:
+            claimName: logstash-pvc
       containers:
         - name: zerodash-api
           image: imzerofiltre/zerodash-api:0.0.1
