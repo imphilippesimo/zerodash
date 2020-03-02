@@ -6,7 +6,7 @@ FROM openjdk:8-jre-alpine
 ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS\
     SLEEP=10\
     JAVA_OPTS="-Xmx1024m -Xms256m"\
-    DB_HOST=57.71.73.60\
+    DB_HOST=52.71.73.60\
     DB_PORT=3307\
     DB_NAME=zerodash\
     DB_USER=zerodash\
