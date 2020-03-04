@@ -1,40 +1,52 @@
-withEnv(["api_image_tag=imzerofiltre/zerodash-api:0.0.${env.BUILD_NUMBER}"]) {
-    node('chilling-jenkins-jenkins-slave') {
-        stage('Checkout') {
-            checkout scm
-        }
+def label = "worker-${UUID.randomUUID().toString()}"
 
-        stage('Build') {
-            container('maven') {
-                sh "mvn clean install -DskipTests=true"
+podTemplate(label: label, containers: [
+        containerTemplate(name: 'maven', image: 'maven', command: 'cat', ttyEnabled: true),
+        containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true),
+        containerTemplate(name: 'kubectl', image: 'roffe/kubectl', command: 'cat', ttyEnabled: true)
+],
+        volumes: [
+                hostPathVolume(mountPath: '/root/.m2', hostPath: '/home/jenkins/.m2'),
+                hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock')
+        ]) {
+    withEnv(["api_image_tag=imzerofiltre/zerodash-api:0.0.${env.BUILD_NUMBER}"]) {
+        node('chilling-jenkins-jenkins-slave') {
+            stage('Checkout') {
+                checkout scm
+            }
+
+            stage('Build') {
+                container('maven') {
+                    sh "mvn clean install -DskipTests=true"
+                }
+
+            }
+
+            /*stage('Sonarqube') {
+                   def scannerHome = tool 'SonarQubeScanner'
+                   withSonarQubeEnv('sonarqube') {
+                          sh "${scannerHome}/bin/sonar-scanner"
+                   }
+
+                   timeout(time: 10, unit: 'MINUTES') {
+                           def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
+                           if (qg.status != 'OK') {
+                                error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                           }
+                   }
+             }*/
+
+            stage('Build and push API to docker registry') {
+                withCredentials([usernamePassword(credentialsId: 'DockerHubCredentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    buildAndPush(USERNAME, PASSWORD)
+                }
+            }
+
+            stage('Deploy on k8s') {
+                runApp()
             }
 
         }
-
-        /*stage('Sonarqube') {
-               def scannerHome = tool 'SonarQubeScanner'
-               withSonarQubeEnv('sonarqube') {
-                      sh "${scannerHome}/bin/sonar-scanner"
-               }
-
-               timeout(time: 10, unit: 'MINUTES') {
-                       def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
-                       if (qg.status != 'OK') {
-                            error "Pipeline aborted due to quality gate failure: ${qg.status}"
-                       }
-               }
-         }*/
-
-        stage('Build and push API to docker registry') {
-            withCredentials([usernamePassword(credentialsId: 'DockerHubCredentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                buildAndPush(USERNAME, PASSWORD)
-            }
-        }
-
-        stage('Deploy on k8s') {
-            runApp()
-        }
-
     }
 }
 

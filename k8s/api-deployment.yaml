@@ -26,9 +26,9 @@ spec:
             - containerPort: 9010
           env:
             - name: DB_HOST
-              value: '192.168.99.102'
+              value: '192.168.99.104'
             - name: DB_PORT
-              value: '32715'
+              value: '30539'
             - name: DB_NAME
               value: 'zerodash'
             - name: DB_USER
