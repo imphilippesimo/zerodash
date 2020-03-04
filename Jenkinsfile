@@ -10,7 +10,7 @@ podTemplate(label: label, containers: [
                 hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock')
         ]) {
 
-    node('chilling-jenkins-jenkins-slave') {
+    node(label) {
         stage('Checkout') {
             checkout scm
         }
