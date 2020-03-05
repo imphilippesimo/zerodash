@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zerodash-api
+spec:
+  minReadySeconds: 30
+  progressDeadlineSeconds: 120
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zerodash-api
+  template:
+    metadata:
+      labels:
+        app: zerodash-api
+    spec:
+      volumes:
+        - name: api-logs-volume
+          persistentVolumeClaim:
+            claimName: logstash-pvc
+      containers:
+        - name: zerodash-api
+          image: imzerofiltre/zerodash-api:0.0.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9010
+          env:
+            - name: DB_HOST
+              value: '51.178.60.37'
+            - name: DB_PORT
+              value: '30539'
+            - name: DB_NAME
+              value: 'zerodash'
+            - name: DB_USER
+              value: 'zerodash'
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: zerodash-api
+                  key: mysql-user-password
+            - name: SPRING_ACTIVE_PROFILES
+              value: 'dev'
+            - name: JAVA_OPTS
+              value: '-Xmx1024m -Xms256m'
+            - name: SPRING_OUTPUT_ANSI_ENABLED
+              value: 'ALWAYS'
+
+
