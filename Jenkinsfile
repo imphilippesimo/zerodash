@@ -60,9 +60,7 @@ def buildAndPush(dockerUser, dockerPassword) {
                 docker login -u $dockerUser -p $dockerPassword
                 docker push ${api_image_tag}
                 echo "Image push complete"
-
          """
-
     }
 
 }
