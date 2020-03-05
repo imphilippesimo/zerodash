@@ -16,8 +16,8 @@ import org.springframework.test.context.junit4.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class GraphqlSecurityTests {
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
+public class GraphQLSecurityTests {
 
     @Autowired
     private GraphQLTestTemplate graphQLTestTemplate;
