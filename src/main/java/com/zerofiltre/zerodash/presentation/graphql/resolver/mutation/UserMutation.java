@@ -4,14 +4,16 @@ import com.coxautodev.graphql.tools.*;
 import com.zerofiltre.zerodash.model.*;
 import com.zerofiltre.zerodash.presentation.security.annotation.*;
 import com.zerofiltre.zerodash.service.*;
-import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 
 @Component
 public class UserMutation implements GraphQLMutationResolver {
 
-    @Autowired
     private UserService userService;
+
+    public UserMutation(UserService userService) {
+        this.userService = userService;
+    }
 
     @Unsecured
     public ZDUser createUser(String email, String phoneNumber, String password) {
