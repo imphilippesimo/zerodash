@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class GraphQLSecurityTests {
 
     @Autowired
@@ -50,7 +50,6 @@ public class GraphQLSecurityTests {
 
     @Test
     @DisplayName("Unauthenticated Access to admin secured resource should be unauthorized ")
-    @WithMockUser(username = Constants.TEST_EMAIL)
     public void adminUnauthorizedAccessThrowsException() {
         Assertions.assertThrows(UnauthenticatedAccessException.class, () -> userQuery.allUsers(0, 10));
     }

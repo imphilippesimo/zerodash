@@ -4,7 +4,7 @@ metadata:
   name: zerodash-api
 spec:
   minReadySeconds: 30
-  progressDeadlineSeconds: 120
+  progressDeadlineSeconds: 480
   replicas: 1
   selector:
     matchLabels:
@@ -14,10 +14,6 @@ spec:
       labels:
         app: zerodash-api
     spec:
-      volumes:
-        - name: api-logs-volume
-          persistentVolumeClaim:
-            claimName: logstash-pvc
       containers:
         - name: zerodash-api
           image: imzerofiltre/zerodash-api:0.0.1
