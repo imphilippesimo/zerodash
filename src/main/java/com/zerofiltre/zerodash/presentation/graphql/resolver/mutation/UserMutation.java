@@ -9,6 +9,7 @@ import org.springframework.stereotype.*;
 @Component
 public class UserMutation implements GraphQLMutationResolver {
 
+
     private UserService userService;
 
     public UserMutation(UserService userService) {

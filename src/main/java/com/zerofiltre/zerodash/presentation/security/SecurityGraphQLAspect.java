@@ -79,10 +79,13 @@ public class SecurityGraphQLAspect {
     }
 
     private boolean isAuthorized() {
-        Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        for (GrantedAuthority auth : authorities) {
-            if (auth.getAuthority().equals("ROLE_ADMIN"))
-                return true;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+            for (GrantedAuthority auth : authorities) {
+                if (auth.getAuthority().equals("ROLE_ADMIN"))
+                    return true;
+            }
         }
         return false;
     }

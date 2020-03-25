@@ -1,24 +1,24 @@
 package com.zerofiltre.zerodash.presentation.security;
 
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.stereotype.*;
 
 
 @Component
 public class JwtConfig {
 
 
-    @Value("${security.jwt.header:Authorization}")
+    @Value("${zerodash.security.jwt.header}")
     private String header;
 
-    @Value("${security.jwt.prefix:Bearer }")
+    @Value("${zerodash.security.jwt.prefix}")
     private String prefix;
 
-    @Value("${security.jwt.expiration:#{24*60*60}}")
-    private int expiration;
+    @Value("${zerodash.security.jwt.token-validity-in-seconds}")
+    private int validityInSeconds;
 
-    @Value("${security.jwt.secret:JwtSecretKey}")
+    @Value("${zerodash.security.jwt.secret}")
     private String secret;
 
 
@@ -38,12 +38,12 @@ public class JwtConfig {
         this.prefix = prefix;
     }
 
-    public int getExpiration() {
-        return expiration;
+    public int getValidityInSeconds() {
+        return validityInSeconds;
     }
 
-    public void setExpiration(int expiration) {
-        this.expiration = expiration;
+    public void setValidityInSeconds(int validityInSeconds) {
+        this.validityInSeconds = validityInSeconds;
     }
 
     public String getSecret() {

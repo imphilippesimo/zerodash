@@ -78,7 +78,7 @@ def runApp() {
         sh """
                 kubectl set image deployment/zerodash-api zerodash-api=${api_image_tag}
                 if ! kubectl rollout status -w deployment/zerodash-api; then
-                    kubectl rollout undo deployment/zerodash-api
+                    kubectl rollout undo deployment.v1.apps/zerodash-api
                     kubectl rollout status deployment/zerodash-api
                     exit 1
                 fi

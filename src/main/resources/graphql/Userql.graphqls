@@ -3,6 +3,7 @@ type User{
     email: String!
     phoneNumber: String
     role: String
+    activated: Boolean
     #no paswword to avoid malicious retrieval
 }
 

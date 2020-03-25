@@ -18,5 +18,35 @@ spring:
   logging:
     level:
       org.hibernate.SQL: DEBUG
+  ## Internationalization
+  messages:
+    basename: i18n/messages
+
+  ## Mail configuration
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: kilosavendre@gmail.com  #Replace this field with your Gmail username.
+    password: zgdciolpywkazafb           #Replace this field with your Gmail password.
+    protocol: smtp
+    tls: true
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
+      ssl.trust: smtp.gmail.com
+
 server:
   port: 9010
+
+#Custom properties
+zerodash:
+  email:
+    from: hello@zerodash.tech
+    base-url: http://localhost:9010
+  security:
+    jwt:
+      header: Authorization
+      prefix: Bearer
+      # Token is valid 24 hours
+      token-validity-in-seconds: 86400
+      secret: JwtSecretKey

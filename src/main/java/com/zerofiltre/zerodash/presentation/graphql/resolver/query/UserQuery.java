@@ -1,16 +1,15 @@
 package com.zerofiltre.zerodash.presentation.graphql.resolver.query;
 
-import com.coxautodev.graphql.tools.GraphQLQueryResolver;
-import com.zerofiltre.zerodash.model.ZDUser;
+import com.coxautodev.graphql.tools.*;
+import com.zerofiltre.zerodash.model.*;
 import com.zerofiltre.zerodash.presentation.security.annotation.*;
-import com.zerofiltre.zerodash.service.UserService;
-import org.springframework.stereotype.Component;
+import com.zerofiltre.zerodash.service.*;
+import org.springframework.stereotype.*;
 
-import java.util.List;
+import java.util.*;
 
 @Component
 public class UserQuery implements GraphQLQueryResolver {
-
 
     private UserService userService;
 

@@ -1,12 +1,11 @@
 package com.zerofiltre.zerodash.dao;
 
-import com.zerofiltre.zerodash.*;
 import com.zerofiltre.zerodash.model.*;
 import com.zerofiltre.zerodash.utils.*;
 import org.junit.jupiter.api.*;
 import org.junit.runner.*;
 import org.springframework.beans.factory.annotation.*;
-import org.springframework.boot.test.context.*;
+import org.springframework.boot.test.autoconfigure.orm.jpa.*;
 import org.springframework.test.annotation.*;
 import org.springframework.test.context.junit4.*;
 
@@ -15,7 +14,7 @@ import java.util.*;
 import static org.assertj.core.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = ZerodashApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class UserDAOTest {
 

@@ -1,12 +1,10 @@
 package com.zerofiltre.zerodash.presentation.graphql.resolver.mutation;
 
-import com.zerofiltre.zerodash.*;
 import com.zerofiltre.zerodash.model.*;
 import com.zerofiltre.zerodash.service.*;
 import com.zerofiltre.zerodash.utils.*;
 import org.junit.jupiter.api.*;
 import org.junit.runner.*;
-import org.springframework.boot.test.context.*;
 import org.springframework.data.domain.*;
 import org.springframework.test.context.junit4.*;
 
@@ -18,7 +16,6 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = ZerodashApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserMutationTest {
 
     private UserService userServiceMock = mock(UserService.class);
