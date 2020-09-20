@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: zerodash-prod
+  name: zerodash-prod
+spec:
+  minReadySeconds: 30
+  progressDeadlineSeconds: 120
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zerodash-prod
+  template:
+    metadata:
+      labels:
+        app: zerodash-prod
+    spec:
+      containers:
+        - name: zerodash-prod
+          image: imzerofiltre/zerodash-api:0.0.1
+          #image: $CONTAINER_IMAGE
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9010
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: zerodash-prod
+                  key: zerodash-db-url
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: zerodash-prod
+                  key: zerodash-db-port
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: zerodash-prod
+                  key: zerodash-db-name
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: zerodash-prod
+                  key: zerodash-db-password
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: zerodash-prod
+                  key: zerodash-db-user
+            - name: JAVA_OPTS
+              value: '-Xmx1024m -Xms256m'
+            - name: SPRING_OUTPUT_ANSI_ENABLED
+              value: 'ALWAYS'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: zerodash-prod
+  name: zerodash-prod
+spec:
+  ports:
+    - nodePort: 32000
+      port: 80
+      targetPort: 9010
+  selector:
+    app: zerodash-prod
+  type: NodePort
+
+
+
+

@@ -36,7 +36,9 @@ podTemplate(label: label, containers: [
                }
          }*/
 
-        withEnv(["api_image_tag=imzerofiltre/zerodash-api:0.0.${env.BUILD_NUMBER}"]) {
+        withEnv(["api_image_tag=imzerofiltre/zerodash-api:${env.BUILD_NUMBER}",
+                 "env_name=${env.BRANCH_NAME == "master" ? "prod" : "dev"}"
+        ]) {
             stage('Build and push API to docker registry') {
                 withCredentials([usernamePassword(credentialsId: 'DockerHubCredentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     buildAndPush(USERNAME, PASSWORD)
@@ -70,16 +72,16 @@ def runApp() {
     container('kubectl') {
         dir("k8s") {
             sh """
-                     kubectl apply -f api-service.yaml
-                     kubectl apply -f api-secret.yaml
-                     kubectl apply -f api-deployment.yaml
-                   """
+                  echo "Branch:" ${env.BRANCH_NAME}
+                  echo "env:" ${env_name}
+                  kubectl apply -f api-${env_name}.yaml
+               """
         }
         sh """
-                kubectl set image deployment/zerodash-api zerodash-api=${api_image_tag}
-                if ! kubectl rollout status -w deployment/zerodash-api; then
-                    kubectl rollout undo deployment.v1.apps/zerodash-api
-                    kubectl rollout status deployment/zerodash-api
+                kubectl set image deployment/zerodash-${env_name} zerodash-${env_name}=${api_image_tag} -n zerodash-${env_name}
+                if ! kubectl rollout status -w deployment/zerodash-${env_name} -n zerodash-${env_name}; then
+                    kubectl rollout undo deployment.v1.apps/zerodash-${env_name} -n zerodash-${env_name}
+                    kubectl rollout status deployment/zerodash-${env_name} -n zerodash-${env_name}
                     exit 1
                 fi
             """
