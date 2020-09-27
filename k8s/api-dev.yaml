@@ -23,6 +23,11 @@ spec:
           ports:
             - containerPort: 9010
           env:
+            - name: BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: zerodash-dev
+                  key: zerodash-base-url
             - name: DB_HOST
               valueFrom:
                 configMapKeyRef:
@@ -48,6 +53,21 @@ spec:
                 secretKeyRef:
                   name: zerodash-dev
                   key: zerodash-db-user
+            - name: EMAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: zerodash-dev
+                  key: zerodash-email-password
+            - name: EMAIL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: zerodash-dev
+                  key: zerodash-email-user
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: zerodash-dev
+                  key: zerodash-jwt-secret
             - name: JAVA_OPTS
               value: '-Xmx1024m -Xms256m'
             - name: SPRING_OUTPUT_ANSI_ENABLED

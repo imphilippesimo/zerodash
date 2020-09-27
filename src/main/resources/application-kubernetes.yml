@@ -25,8 +25,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: philippesimo@zerofiltre.tech  #Replace this field with your Gmail username.
-    password: pcyhubgnlyivpplk           #Mail app password.
+    username: ${EMAIL_USER}  #Replace this field with your Gmail username.
+    password: ${EMAIL_PASSWORD}           #Mail app password.
     protocol: smtp
     tls: true
     properties.mail.smtp:
@@ -37,13 +37,13 @@ spring:
 #Custom properties
 zerodash:
   email:
-    base-url: http://3.128.30.122:32000
+    base-url: ${BASE_URL}
   security:
     jwt:
       header: Authorization
       prefix: Bearer
       # Token is valid 24 hours
       token-validity-in-seconds: 86400
-      secret: JwtSecretKey
+      secret: ${JWT_SECRET}
 server:
   port: 9010
