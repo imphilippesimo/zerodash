@@ -66,7 +66,7 @@ public class EmailService {
 
     @Async
     public void sendEmailFromTemplate(ZDUser user, String templateName, String titleKey) {
-        Locale locale = Locale.ENGLISH;
+        Locale locale = Locale.FRANCE;
         Context context = new Context(locale);
         context.setVariable(USER, user);
         context.setVariable(BASE_URL, baseUrl);
