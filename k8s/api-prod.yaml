@@ -60,7 +60,7 @@ metadata:
   name: zerodash-prod
 spec:
   ports:
-    - nodePort: 32000
+    - nodePort: 33000
       port: 80
       targetPort: 9010
   selector:
