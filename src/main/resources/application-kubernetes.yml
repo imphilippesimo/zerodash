@@ -37,7 +37,7 @@ spring:
 #Custom properties
 zerodash:
   email:
-    base-url: http://51.178.60.37:32000
+    base-url: http://3.128.30.122:32000
   security:
     jwt:
       header: Authorization
