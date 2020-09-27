@@ -37,7 +37,6 @@ spring:
 #Custom properties
 zerodash:
   email:
-    from: hello@zerodash.tech
     base-url: http://51.178.60.37:32000
   security:
     jwt:

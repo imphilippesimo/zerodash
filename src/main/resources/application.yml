@@ -43,7 +43,6 @@ server:
 #Custom properties
 zerodash:
   email:
-    from: hello@zerodash.tech
     base-url: http://localhost:9010
   security:
     jwt:
