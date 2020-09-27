@@ -25,9 +25,6 @@ public class EmailService {
     @Value("${zerodash.email.base-url}")
     private String baseUrl;
 
-    @Value("${zerodash.email.from}")
-    private String from;
-
     private SpringTemplateEngine templateEngine;
 
     private MessageSource messageSource;
@@ -50,7 +47,6 @@ public class EmailService {
         try {
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, isMultipart, StandardCharsets.UTF_8.name());
             message.setTo(to);
-            message.setFrom(from);
             message.setSubject(subject);
             message.setText(content, isHtml);
             emailSender.send(mimeMessage);
@@ -65,13 +61,13 @@ public class EmailService {
     }
 
     @Async
-    public void sendEmailFromTemplate(ZDUser user, String templateName, String titleKey) {
+    public void sendEmailFromTemplate(ZDUser user, String templateName, String subjectKey) {
         Locale locale = Locale.FRANCE;
         Context context = new Context(locale);
         context.setVariable(USER, user);
         context.setVariable(BASE_URL, baseUrl);
         String content = templateEngine.process(templateName, context);
-        String subject = messageSource.getMessage(titleKey, null, locale);
+        String subject = messageSource.getMessage(subjectKey, null, locale);
         sendSimpleMessage(user.getEmail(), subject, content, false, true);
 
     }
